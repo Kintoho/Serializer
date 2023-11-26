@@ -2,16 +2,18 @@ package Serialization.Encoder;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import Serialization.Encoder.Core.ISerializer;
+
 import java.nio.charset.StandardCharsets;
 
-public class StringEncoder implements IEncoder<String> {
+public class StringSerializer implements ISerializer<String> {
 
-    VarIntEncoder varIntEncoder = new VarIntEncoder();
+    IntSerializer varIntEncoder = new IntSerializer();
 
     @Override
     public byte[] encode(String data) {
         byte[] value = data.getBytes(StandardCharsets.UTF_8);
-        byte[] length = varIntEncoder.encode(value.length);
+        byte[] length = varIntEncoder.encode((long) value.length);
 
         return ArrayUtils.addAll(length, value);
     }

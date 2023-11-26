@@ -1,6 +1,8 @@
 package Serialization.Encoder;
 
-public class DoubleEncoder implements IEncoder<Double> {
+import Serialization.Encoder.Core.ISerializer;
+
+public class DoubleSerializer implements ISerializer<Double> {
 
     @Override
     public byte[] encode(Double data) {
