@@ -1,13 +1,12 @@
 package Serialization.Encoder;
 
-import Serialization.Encoder.Core.UIntSerializer;
 import Serialization.Encoder.Core.ZigZag;
-import Serialization.Encoder.Core.ISerializer;
+import Serialization.Encoder.Core.IEncoder;
 
-public class IntSerializer implements ISerializer<Long> {
+public class IntEncoder implements IEncoder<Long> {
     @Override
     public byte[] encode(Long signed) {
-        ISerializer<Long> serializer = new UIntSerializer();
+        IEncoder<Long> serializer = new UIntEncoder();
         Long unsigned = ZigZag.wrap(signed);
         
         return serializer.encode(unsigned);
@@ -16,7 +15,7 @@ public class IntSerializer implements ISerializer<Long> {
 
     @Override
     public Long decode(byte[] bytes) {
-        ISerializer<Long> serializer = new UIntSerializer();
+        IEncoder<Long> serializer = new UIntEncoder();
         Long unsignedResult = serializer.decode(bytes);
         
         return ZigZag.unwrap(unsignedResult);

@@ -2,13 +2,13 @@ package Serialization.Encoder;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import Serialization.Encoder.Core.ISerializer;
+import Serialization.Encoder.Core.IEncoder;
 
 import java.nio.charset.StandardCharsets;
 
-public class StringSerializer implements ISerializer<String> {
+public class StringEncoder implements IEncoder<String> {
 
-    IntSerializer varIntEncoder = new IntSerializer();
+    IntEncoder varIntEncoder = new IntEncoder();
 
     @Override
     public byte[] encode(String data) {

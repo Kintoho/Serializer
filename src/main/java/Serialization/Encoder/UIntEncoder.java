@@ -1,9 +1,11 @@
-package Serialization.Encoder.Core;
+package Serialization.Encoder;
+
+import Serialization.Encoder.Core.IEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UIntSerializer implements ISerializer<Long> {
+public class UIntEncoder implements IEncoder<Long> {
     @Override
     public byte[] encode(Long unsigned) {
         List<Byte> encodedBytesList = new ArrayList<>();
