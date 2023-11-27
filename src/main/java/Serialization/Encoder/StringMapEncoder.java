@@ -12,18 +12,18 @@ public class StringMapEncoder {
     private static final IEncoder<Long> intEncoder = new IntEncoder(); //TODO: Првоерить тип
     private static final IEncoder<String> stringEncoder = new StringEncoder();
     public byte[] encode(Map<String, String> data) {
-
-        List<byte[]> encodedData = new LinkedList<>();
+        List<byte[]> encodedDataList = new LinkedList<>();
+        int bytesCounter = 0;
         for (String key : data.keySet()) {
-            encodedData.add(stringEncoder.encode(key));
-            encodedData.add(stringEncoder.encode(data.get(key)));
-            System.out.println("ID = " + key + ", День недели = " + data.get(key));
+            encodedDataList.add(stringEncoder.encode(key));
+            bytesCounter += stringEncoder.encode(key).length;
+            encodedDataList.add(stringEncoder.encode(data.get(key)));
+            bytesCounter += stringEncoder.encode(key).length;
         }
-        System.out.println();
 
-        byte[] result = new byte[1000]; // TODO:
-        splitList(result, encodedData);
-        return result;
+        byte[] encodedData = new byte[bytesCounter];
+        splitList(encodedData, encodedDataList);
+        return encodedData;
     }
 
     private void splitList(byte[] result, List<byte[]> bytesList) {
