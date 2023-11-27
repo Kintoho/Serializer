@@ -17,7 +17,7 @@ public class IntEncoder implements IEncoder<Long> {
     public Long decode(byte[] bytes) {
         IEncoder<Long> serializer = new UIntEncoder();
         Long unsignedResult = serializer.decode(bytes);
-        
+        System.out.println("Testing: " + unsignedResult);
         return ZigZag.unwrap(unsignedResult);
     }
 

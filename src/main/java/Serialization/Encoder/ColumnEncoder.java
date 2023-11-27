@@ -6,32 +6,23 @@ import java.util.Map;
 
 import Serialization.Encoder.Core.IEncoder;
 
-public class MapEncoder {
+public class ColumnEncoder<V> {
     private static final IEncoder<Long> longCoder = new IntEncoder();
     private static final IEncoder<String> strCoder = new StringEncoder();
+    private final IEncoder<List<V>> listCoder = new ListEncoder<>();
 
-    public byte[] encode(Map<String, String> data) {
+    public byte[] encode(Map<String, List<V>> column) {
         List<byte[]> encodedData = new LinkedList<>();
-        for (String key : data.keySet()) {
+        for (String key : column.keySet()) {
             encodedData.add(strCoder.encode(key));
-            encodedData.add(strCoder.encode(data.get(key)));
-            System.out.println("ID = " + key + ", День недели = " + data.get(key));
+            encodedData.add(listCoder.encode(column.get(key)));
+            System.out.println("ID = " + key + ", День недели = " + column.get(key));
         }
         System.out.println();
 
         byte[] result = new byte[1000]; // TODO:
         splitList(result, encodedData);
         return result;
-    }
-
-    public byte[] encode(Map<String, List> column) {
-        byte[] encodedData = new byte[10];
-        for (String key : column.keySet()) {
-            encodedData = strCoder.encode(key);
-            System.out.println("ID = " + key + ", День недели = " + column.get(key));
-        }
-        System.out.println();
-        return encodedData;
     }
 
     private void splitList(byte[] result, List<byte[]> bytesList) {

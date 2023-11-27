@@ -33,6 +33,11 @@ public class UIntEncoder implements IEncoder<Long> {
         for (int i = 0; i < bytes.length; i++) {
             unsigned |= (bytes[i] & 0x7f) << shift;
             shift += 7;
+
+            if ((bytes[i] & 0x80) == 0) {
+                break;
+            }
+
         }
         
         return unsigned;
