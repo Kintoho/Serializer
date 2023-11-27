@@ -13,13 +13,13 @@ public class LongSerializerTest {
 
     @Test
     public void decodingTest() {
-        List<Long> testData = List.of(Long.MAX_VALUE / 2, Long.MIN_VALUE / 2, -1231231L, 123L, 0L);
+        List<Long> testData = List.of(Long.MAX_VALUE / 2, Long.MIN_VALUE / 2, -1231231L, 123L, 0L, 20L, -56L, 123456890L, -123456890L);
         IntEncoder coder = new IntEncoder();
 
         for (long x : testData) {
             byte[] encodedBytes = coder.encode(x);
             Long decoded = coder.decode(encodedBytes);
-            //assertEquals(encodedBytes.length, decoded.getLength());
+            // assertEquals(encodedBytes.length, decoded.getLength());
             assertEquals(x, decoded.longValue());
         }
     }
