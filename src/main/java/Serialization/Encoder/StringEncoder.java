@@ -20,6 +20,8 @@ public class StringEncoder implements IEncoder<String> {
 
     @Override
     public String decode(byte[] data) {
-        return "Переделай меня";
+        Long result = varIntEncoder.decode(data);
+        String str = new String(data, data.length, Math.toIntExact(result), StandardCharsets.UTF_8); // TODO: type
+        return str;
     }
 }

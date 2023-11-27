@@ -51,6 +51,11 @@ public class UIntEncoder implements IEncoder<Long> {
         for (i = 0; i < bytes.length; i++) {
             unsigned |= (long) (bytes[i] & 0x7f) << shift;
             shift += 7;
+
+            if ((bytes[i] & 0x80) == 0) {
+                break;
+            }
+
         }
 
         if (i > Long.BYTES + 1) {
