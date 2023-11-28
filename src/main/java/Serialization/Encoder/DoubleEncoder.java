@@ -2,6 +2,7 @@ package Serialization.Encoder;
 
 import java.nio.ByteBuffer;
 
+import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
 
 public class DoubleEncoder implements IEncoder<Double> {
@@ -26,8 +27,13 @@ public class DoubleEncoder implements IEncoder<Double> {
     }
 
     @Override
-    public DecoderResult<Double> decode(byte[] encodedBytes) {
-        return new DecoderResult<>(ByteBuffer.wrap(encodedBytes).getDouble(), encodedBytes.length);
+    public DecoderResult<Double> decode(byte[] encodedData, int fromByte) {
+        return new DecoderResult<>(ByteBuffer.wrap(encodedData).getDouble(fromByte), encodedData.length);
+    }
+
+    @Override
+    public DecoderResult<Double> decode(byte[] encodedData) {
+        return decode(encodedData, 0);
     }
 
     private void checkDiapason(Double value) {

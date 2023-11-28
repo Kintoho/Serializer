@@ -1,5 +1,6 @@
 package Serialization.Encoder;
 
+import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
 
 import java.util.LinkedList;
@@ -13,8 +14,11 @@ public class ListEncoder <V> implements IEncoder<List<V>> {
         IEncoder encoder = switch (data.get(0).getClass().getName()) {
             case "String" -> new StringEncoder();
             case "Integer" -> new IntEncoder();
+            case "Long" -> new LongEncoder();
+            case "Double" -> new DoubleEncoder();
             default -> throw new IllegalStateException("Unexpected value: " + data.get(0).getClass().getName());
         };
+
         for (V datum : data) {
             encodedDataList.add(encoder.encode(datum));
             bytesCounter += encoder.encode(datum).length;
@@ -26,7 +30,12 @@ public class ListEncoder <V> implements IEncoder<List<V>> {
     }
 
     @Override
-    public List<V> decode(byte[] bytes) {
+    public DecoderResult<List<V>> decode(byte[] encodedData) {
+        return decode(encodedData, 0);
+    }
+
+    @Override
+    public DecoderResult<List<V>> decode(byte[] encodedData, int fromByte) {
         return null;
     }
 

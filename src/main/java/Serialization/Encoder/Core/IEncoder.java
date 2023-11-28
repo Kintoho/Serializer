@@ -1,9 +1,8 @@
 package Serialization.Encoder.Core;
 
-import Serialization.Encoder.DecoderResult;
-
 public interface IEncoder<T> {
-    public byte[] encode(T data);
+    byte[] encode(T data);
 
-    public DecoderResult<T> decode(byte[] bytes);
+    DecoderResult<T> decode(byte[] encodedData);
+    DecoderResult<T> decode(byte[] encodedData, int fromByte);
 }

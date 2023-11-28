@@ -1,5 +1,6 @@
 package Serialization.Encoder;
 
+import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
 
 import java.util.ArrayList;
@@ -26,26 +27,30 @@ public class UIntEncoder implements IEncoder<Long> {
     }
 
     @Override
-    public DecoderResult<Long> decode(byte[] bytes) {
+    public DecoderResult<Long> decode(byte[] encodedData, int fromByte) {
         long unsigned = 0;
         byte shift = 0;
 
         int bytesCount;
-        for (bytesCount = 0; bytesCount < bytes.length; bytesCount++) {
-            unsigned |= (long) (bytes[bytesCount] & 0x7f) << shift;
+        for (bytesCount = 0; bytesCount < encodedData.length; bytesCount++) {
+            unsigned |= (long) (encodedData[bytesCount+fromByte] & 0x7f) << shift;
             shift += 7;
 
-            if ((bytes[bytesCount] & 0x80) == 0) {
+            if ((encodedData[bytesCount] & 0x80) == 0) {
                 break;
             }
 
         }
 
         if (bytesCount > Long.BYTES + 1) {
-            throw new RuntimeException("Too many bytes in Long");
+            throw new RuntimeException("Too many encodedData in Long");
         }
         
-        return new DecoderResult<>(unsigned, bytes.length);
+        return new DecoderResult<>(unsigned, encodedData.length);
     }
 
+    @Override
+    public DecoderResult<Long> decode(byte[] encodedData) {
+        return decode(encodedData, 0);
+    }
 }

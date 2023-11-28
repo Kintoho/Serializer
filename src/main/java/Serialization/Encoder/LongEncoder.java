@@ -1,5 +1,6 @@
 package Serialization.Encoder;
 
+import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.ZigZag;
 import Serialization.Encoder.Core.IEncoder;
 
@@ -18,11 +19,16 @@ public class LongEncoder implements IEncoder<Long> {
     }
 
     @Override
-    public DecoderResult<Long> decode(byte[] bytes) {
+    public DecoderResult<Long> decode(byte[] encodedData, int fromByte) {
         IEncoder<Long> serializer = new UIntEncoder();
-        DecoderResult<Long> unsignedResult = serializer.decode(bytes);
+        DecoderResult<Long> unsignedResult = serializer.decode(encodedData, fromByte);
         
         return new DecoderResult<Long>(ZigZag.unwrap(unsignedResult.getDecoderResult()), unsignedResult.getLength());
+    }
+
+    @Override
+    public DecoderResult<Long> decode(byte[] encodedData) {
+        return decode(encodedData, 0);
     }
 
     private void checkDiapason(Long value) {

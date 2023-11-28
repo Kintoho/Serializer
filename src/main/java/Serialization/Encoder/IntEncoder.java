@@ -1,5 +1,6 @@
 package Serialization.Encoder;
 
+import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
 
 public class IntEncoder implements IEncoder<Integer> {
@@ -16,9 +17,14 @@ public class IntEncoder implements IEncoder<Integer> {
     }
 
     @Override
-    public DecoderResult<Integer> decode(byte[] bytes) {
-        DecoderResult<Long> longResult = longEncoder.decode(bytes);
+    public DecoderResult<Integer> decode(byte[] encodedData, int fromByte) {
+        DecoderResult<Long> longResult = longEncoder.decode(encodedData, fromByte);
         return new DecoderResult<>(longResult.getDecoderResult().intValue(), longResult.getLength());
+    }
+
+    @Override
+    public DecoderResult<Integer> decode(byte[] encodedData) {
+        return decode(encodedData, 0);
     }
 
     private void checkDiapason(int value) {

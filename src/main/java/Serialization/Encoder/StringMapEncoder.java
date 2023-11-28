@@ -1,15 +1,13 @@
 package Serialization.Encoder;
 
+import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StringMapEncoder {
 
-    private static final IEncoder<Long> intEncoder = new IntEncoder(); //TODO: Првоерить тип
+    private static final IEncoder<Integer> intEncoder = new IntEncoder();
     private static final IEncoder<String> stringEncoder = new StringEncoder();
     public byte[] encode(Map<String, String> data) {
         List<byte[]> encodedDataList = new LinkedList<>();
@@ -24,6 +22,21 @@ public class StringMapEncoder {
         byte[] encodedData = new byte[bytesCounter];
         splitList(encodedData, encodedDataList);
         return encodedData;
+    }
+
+    public DecoderResult<Map<String, String>> decode(byte[] encodedData, int fromByte) {
+        DecoderResult<Integer> dataSize = intEncoder.decode(encodedData);
+        int offset = fromByte + dataSize.getLength();
+        Map<String, String> result = new HashMap<>(dataSize.getDecoderResult());
+
+        for (int i = 0; i < dataSize.getDecoderResult(); i++) {
+            DecoderResult<String> key = stringEncoder.decode(encodedData, offset);
+            offset += key.getLength();
+            DecoderResult<String> value = stringEncoder.decode(encodedData, offset);
+            offset += value.getLength();
+            result.put(key.getDecoderResult(), value.getDecoderResult());
+        }
+        return new DecoderResult<>(result, offset - fromByte);
     }
 
     private void splitList(byte[] result, List<byte[]> bytesList) {

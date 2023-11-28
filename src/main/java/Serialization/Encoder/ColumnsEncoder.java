@@ -1,14 +1,14 @@
 package Serialization.Encoder;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
 
-public class ColumnEncoder<V> {
-    private static final IEncoder<Long> longCoder = new IntEncoder();
+public class ColumnsEncoder<V> {
+    private static final IEncoder<Integer> intEncoder = new IntEncoder();
     private static final IEncoder<String> stringEncoder = new StringEncoder();
     private final IEncoder<List<V>> listEncoder = new ListEncoder<>();
 
@@ -24,6 +24,11 @@ public class ColumnEncoder<V> {
         byte[] encodedColumn = new byte[bytesCounter];
         splitList(encodedColumn, encodedDataList);
         return encodedColumn;
+    }
+
+    public DecoderResult<Map<String, List<V>>> decode(byte[] encodedData, int fromByte) {
+
+        return null;
     }
 
     private void splitList(byte[] result, List<byte[]> bytesList) {

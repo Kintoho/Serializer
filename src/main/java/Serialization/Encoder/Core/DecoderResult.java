@@ -1,4 +1,4 @@
-package Serialization.Encoder;
+package Serialization.Encoder.Core;
 
 public class DecoderResult<T> {
     private final T decoderResult;

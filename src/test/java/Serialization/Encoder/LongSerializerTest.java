@@ -1,5 +1,6 @@
 package Serialization.Encoder;
 
+import Serialization.Encoder.Core.DecoderResult;
 import org.junit.Test;
 
 import java.util.List;

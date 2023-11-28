@@ -1,5 +1,6 @@
 package Serialization.Encoder;
 
+import Serialization.Encoder.Core.DecoderResult;
 import org.apache.commons.lang3.ArrayUtils;
 
 import Serialization.Encoder.Core.IEncoder;
@@ -8,20 +9,24 @@ import java.nio.charset.StandardCharsets;
 
 public class StringEncoder implements IEncoder<String> {
 
-    IntEncoder varIntEncoder = new IntEncoder();
+    IEncoder<Integer> intEncoder = new IntEncoder();
 
     @Override
     public byte[] encode(String data) {
         byte[] value = data.getBytes(StandardCharsets.UTF_8);
-        byte[] length = varIntEncoder.encode((long) value.length);
-
+        byte[] length = intEncoder.encode(value.length);
         return ArrayUtils.addAll(length, value);
     }
 
     @Override
-    public String decode(byte[] data) {
-        Long result = varIntEncoder.decode(data);
-        String str = new String(data, data.length, Math.toIntExact(result), StandardCharsets.UTF_8); // TODO: type
-        return str;
+    public DecoderResult<String> decode(byte[] encodedData, int fromByte) {
+        DecoderResult<Integer> result = intEncoder.decode(encodedData, fromByte);
+        String str = new String(encodedData, fromByte + result.getLength(), result.getDecoderResult(), StandardCharsets.UTF_8);
+        return new DecoderResult<>(str, result.getLength() + result.getDecoderResult());
+    }
+
+    @Override
+    public DecoderResult<String> decode(byte[] encodedData){
+        return decode(encodedData, 0);
     }
 }
