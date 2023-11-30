@@ -7,10 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ListEncoder <V> implements IEncoder<List<V>> {
+    
     @Override
     public byte[] encode(List<V> data) {
         List<byte[]> encodedDataList = new LinkedList<>();
         int bytesCounter = 0;
+
         IEncoder encoder = switch (data.get(0).getClass().getName()) {
             case "String" -> new StringEncoder();
             case "Integer" -> new IntEncoder();
