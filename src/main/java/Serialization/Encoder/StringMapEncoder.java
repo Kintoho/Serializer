@@ -34,7 +34,7 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
         }
 
         byte[] encodedData = new byte[bytesCounter];
-        splitList(encodedData, encodedDataList);
+        listToByteArray(encodedData, encodedDataList);
         
         return encodedData;
     }
@@ -51,7 +51,7 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
 
             DecoderResult<String> value = stringEncoder.decode(encodedData, offset);
             offset += value.getLength();
-            
+
             result.put(key.getDecoderResult(), value.getDecoderResult());
         }
         return new DecoderResult<>(result, offset - fromByte);
@@ -62,7 +62,7 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
         return decode(encodedData, 0);
     }
 
-    private void splitList(byte[] result, List<byte[]> bytesList) {
+    private void listToByteArray(byte[] result, List<byte[]> bytesList) {
         int pos = 0;
 
         for (byte[] bytes : bytesList) {
