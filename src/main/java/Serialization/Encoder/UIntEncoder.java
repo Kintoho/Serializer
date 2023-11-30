@@ -18,6 +18,10 @@ public class UIntEncoder implements IEncoder<Long> {
             encodedBytesList.add(varByte);
         }
 
+        if (encodedBytesList.isEmpty()) {
+            encodedBytesList.add((byte) 0);
+        }
+
         byte[] encodedBytes = new byte[encodedBytesList.size()];
         for (int i = 0; i < encodedBytesList.size(); i++) {
             encodedBytes[i] = encodedBytesList.get(i).byteValue();
@@ -39,14 +43,14 @@ public class UIntEncoder implements IEncoder<Long> {
             if ((encodedData[bytesCount] & 0x80) == 0) {
                 break;
             }
-
         }
+        bytesCount++;
 
         if (bytesCount > Long.BYTES + 1) {
             throw new RuntimeException("Too many encodedData in Long");
         }
         
-        return new DecoderResult<>(unsigned, encodedData.length);
+        return new DecoderResult<>(unsigned, bytesCount);
     }
 
     @Override
