@@ -40,7 +40,7 @@ public class UIntEncoder implements IEncoder<Long> {
             unsigned |= (long) (encodedData[bytesCount+fromByte] & 0x7f) << shift;
             shift += 7;
 
-            if ((encodedData[bytesCount] & 0x80) == 0) {
+            if ((encodedData[bytesCount+fromByte] & 0x80) == 0) {
                 break;
             }
         }
