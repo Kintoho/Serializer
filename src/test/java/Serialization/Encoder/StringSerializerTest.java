@@ -12,7 +12,7 @@ import org.junit.Test;
 public class StringSerializerTest {
     @Test
     public void testCoding() {
-        List<String> expList = List.of("Lala2", "Lallre", "Я могучий", "12345 вышел зайчик");
+        List<String> expList = List.of("12ufshgvadbfn;l", "qwertyuioasdfghjkzxcv", "", "123.4567", "/n/n/n/t/t/n");
         IEncoder<String> coder = new StringEncoder();
         
         for (String x : expList) {
