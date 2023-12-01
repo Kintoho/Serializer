@@ -28,7 +28,7 @@ public class DoubleEncoder implements IEncoder<Double> {
 
     @Override
     public DecoderResult<Double> decode(byte[] encodedData, int fromByte) {
-        return new DecoderResult<>(ByteBuffer.wrap(encodedData).getDouble(fromByte), encodedData.length);
+        return new DecoderResult<>(ByteBuffer.wrap(encodedData).getDouble(fromByte), Double.BYTES);
     }
 
     @Override
