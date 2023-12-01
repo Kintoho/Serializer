@@ -15,6 +15,7 @@ public class StringEncoder implements IEncoder<String> {
     public byte[] encode(String data) {
         byte[] value = data.getBytes(StandardCharsets.UTF_8);
         byte[] length = intEncoder.encode(value.length);
+        
         return ArrayUtils.addAll(length, value);
     }
 
@@ -22,6 +23,7 @@ public class StringEncoder implements IEncoder<String> {
     public DecoderResult<String> decode(byte[] encodedData, int fromByte) {
         DecoderResult<Integer> result = intEncoder.decode(encodedData, fromByte);
         String str = new String(encodedData, fromByte + result.getLength(), result.getDecoderResult(), StandardCharsets.UTF_8);
+        
         return new DecoderResult<>(str, result.getLength() + result.getDecoderResult());
     }
 
