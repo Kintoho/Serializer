@@ -37,10 +37,10 @@ public class UIntEncoder implements IEncoder<Long> {
 
         int bytesCount;
         for (bytesCount = 0; bytesCount < encodedData.length; bytesCount++) {
-            unsigned |= (long) (encodedData[bytesCount+fromByte] & 0x7f) << shift;
+            unsigned |= (long) (encodedData[bytesCount + fromByte] & 0x7f) << shift;
             shift += 7;
 
-            if ((encodedData[bytesCount+fromByte] & 0x80) == 0) {
+            if ((encodedData[bytesCount + fromByte] & 0x80) == 0) {
                 break;
             }
         }
@@ -49,7 +49,7 @@ public class UIntEncoder implements IEncoder<Long> {
         if (bytesCount > Long.BYTES + 1) {
             throw new RuntimeException("Too many encodedData in Long");
         }
-        
+
         return new DecoderResult<>(unsigned, bytesCount);
     }
 

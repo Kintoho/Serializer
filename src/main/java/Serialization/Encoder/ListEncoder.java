@@ -27,16 +27,8 @@ public class ListEncoder<V> implements IEncoder<List<V>> {
             throw new IllegalStateException("Unexpected value: " + data.get(0).getClass());
         }
 
-        // IEncoder<V> encoder = switch (data.get(0).getClass().getName()) {
-        // case "String" -> new StringEncoder();
-        // case "Integer" -> new IntEncoder();
-        // case "Long" -> new LongEncoder();
-        // case "Double" -> new DoubleEncoder();
-        // default -> throw new IllegalStateException("Unexpected value: " +
-        // data.get(0).getClass().getName());
-        // };
-
         byte[] encodedListSize = intEncoder.encode(data.size());
+
         encodedDataList.add(encodedListSize);
         bytesCounter += encodedListSize.length;
 
@@ -54,14 +46,10 @@ public class ListEncoder<V> implements IEncoder<List<V>> {
     }
 
     @Override
-    public DecoderResult<List<V>> decode(byte[] encodedData) {
-        return decode(encodedData, 0);
-    }
-
-    @Override
     public DecoderResult<List<V>> decode(byte[] encodedData, int fromByte) {
         DecoderResult<Integer> dataSize = intEncoder.decode(encodedData);
         int offset = fromByte + dataSize.getLength();
+
         List<V> result = new LinkedList<>();
 
         for (int i = 0; i < dataSize.getDecoderResult(); i++) {
@@ -70,8 +58,13 @@ public class ListEncoder<V> implements IEncoder<List<V>> {
 
             result.add(listItem.getDecoderResult());
         }
-        
+
         return new DecoderResult<List<V>>(result, offset - fromByte);
+    }
+
+    @Override
+    public DecoderResult<List<V>> decode(byte[] encodedData) {
+        return decode(encodedData, 0);
     }
 
     private void listToByteArray(byte[] result, List<byte[]> bytesList) {
@@ -83,3 +76,12 @@ public class ListEncoder<V> implements IEncoder<List<V>> {
         }
     }
 }
+
+// IEncoder<V> encoder = switch (data.get(0).getClass().getName()) {
+// case "String" -> new StringEncoder();
+// case "Integer" -> new IntEncoder();
+// case "Long" -> new LongEncoder();
+// case "Double" -> new DoubleEncoder();
+// default -> throw new IllegalStateException("Unexpected value: " +
+// data.get(0).getClass().getName());
+// };

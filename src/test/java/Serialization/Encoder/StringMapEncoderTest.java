@@ -14,8 +14,7 @@ public class StringMapEncoderTest extends TestCase {
         var test = List.of(
                 Map.of("1", "Alexander", "2", "Dmitry"),
                 Map.of("jhvkjeagvj", "ertyuio;plkjhnbvm,.", "123456890", "zxcbm,sfghjklwetuio",
-                        "help me", "i am dying")
-        );
+                        "help me", "i am dying"));
         IEncoder<Map<String, String>> coder = new StringMapEncoder();
 
         for (Map<String, String> x : test) {
