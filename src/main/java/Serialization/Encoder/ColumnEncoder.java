@@ -7,7 +7,7 @@ import java.util.Map;
 import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
 
-public class ColumnsEncoder<V> {
+public class ColumnEncoder<V> {
     private static final IEncoder<Integer> intEncoder = new IntEncoder();
     private static final IEncoder<String> stringEncoder = new StringEncoder();
     private final IEncoder<List<V>> listEncoder = new ListEncoder<>();
