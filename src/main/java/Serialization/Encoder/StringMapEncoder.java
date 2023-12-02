@@ -6,8 +6,6 @@ import Serialization.Encoder.Core.IEncoder;
 import java.util.*;
 
 public class StringMapEncoder implements IEncoder<Map<String, String>> {
-
-    private static final IEncoder<Integer> intEncoder = new IntEncoder();
     private static final IEncoder<String> stringEncoder = new StringEncoder();
 
     @Override
@@ -16,7 +14,7 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
         int bytesCounter = 0;
 
         Set<String> keys = data.keySet();
-        byte[] encodedMapLength = intEncoder.encode(keys.size());
+        byte[] encodedMapLength = UIntEncoder.encoder.encode((long) keys.size());
 
         encodedDataList.add(encodedMapLength);
         bytesCounter += encodedMapLength.length;
@@ -41,10 +39,10 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
 
     @Override
     public DecoderResult<Map<String, String>> decode(byte[] encodedData, int fromByte) {
-        DecoderResult<Integer> dataSize = intEncoder.decode(encodedData);
+        DecoderResult<Long> dataSize = UIntEncoder.encoder.decode(encodedData);
         int offset = fromByte + dataSize.getLength();
 
-        Map<String, String> result = new HashMap<>(dataSize.getDecoderResult());
+        Map<String, String> result = new HashMap<>(dataSize.getDecoderResult().intValue());
 
         for (int i = 0; i < dataSize.getDecoderResult(); i++) {
             DecoderResult<String> key = stringEncoder.decode(encodedData, offset);

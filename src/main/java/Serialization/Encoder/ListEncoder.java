@@ -3,16 +3,15 @@ package Serialization.Encoder;
 import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListEncoder<V> implements IEncoder<List<V>> {
-    private static final IEncoder<Integer> intEncoder = new IntEncoder();
     private IEncoder<V> encoder;
 
     @Override
     public byte[] encode(List<V> data) {
-        List<byte[]> encodedDataList = new LinkedList<>();
+        List<byte[]> encodedDataList = new ArrayList<>();
         int bytesCounter = 0;
 
         if (data.get(0) instanceof String) {
@@ -27,7 +26,7 @@ public class ListEncoder<V> implements IEncoder<List<V>> {
             throw new IllegalStateException("Unexpected value: " + data.get(0).getClass());
         }
 
-        byte[] encodedListSize = intEncoder.encode(data.size());
+        byte[] encodedListSize = UIntEncoder.encoder.encode((long) data.size());
 
         encodedDataList.add(encodedListSize);
         bytesCounter += encodedListSize.length;
@@ -47,10 +46,10 @@ public class ListEncoder<V> implements IEncoder<List<V>> {
 
     @Override
     public DecoderResult<List<V>> decode(byte[] encodedData, int fromByte) {
-        DecoderResult<Integer> dataSize = intEncoder.decode(encodedData);
+        DecoderResult<Long> dataSize = UIntEncoder.encoder.decode(encodedData);
         int offset = fromByte + dataSize.getLength();
 
-        List<V> result = new LinkedList<>();
+        List<V> result = new ArrayList<>();
 
         for (int i = 0; i < dataSize.getDecoderResult(); i++) {
             DecoderResult<V> listItem = encoder.decode(encodedData, offset);
