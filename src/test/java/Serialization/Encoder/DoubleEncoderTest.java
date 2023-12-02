@@ -10,8 +10,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
-public class DoubleSerializerTest {
-
+public class DoubleEncoderTest {
     @Test
     public void decodingTest() {
         List<Double> testData = List.of(Double.MAX_VALUE / 2, Double.MIN_VALUE / 2, -1231231.123D, 123.4356D, 0.000001D,
@@ -32,6 +31,7 @@ public class DoubleSerializerTest {
         List<Double> wrongData = List.of(Double.MAX_VALUE, Double.MAX_VALUE - 500, -Double.MAX_VALUE,
                 -Double.MAX_VALUE + 500);
         IEncoder<Double> coder = new DoubleEncoder();
+        
         for (Double x : wrongData) {
             assertThrows(RuntimeException.class, () -> coder.encode(x));
         }

@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class StringSerializerTest {
+public class StringEncoderTest {
     @Test
     public void testCoding() {
         List<String> expList = List.of("12ufshgvadbfn;l", "qwertyuioasdfghjkzxcv", "", "123.4567", "/n/n/n/t/t/n");

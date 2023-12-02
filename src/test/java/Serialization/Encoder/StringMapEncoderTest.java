@@ -2,13 +2,14 @@ package Serialization.Encoder;
 
 import Serialization.Encoder.Core.DecoderResult;
 import Serialization.Encoder.Core.IEncoder;
-import junit.framework.TestCase;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import java.util.Map;
 
-public class StringMapEncoderTest extends TestCase {
+public class StringMapEncoderTest {
     @Test
     public void testCoding() {
         var test = List.of(

@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
-public class LongSerializerTest {
+public class LongEncoderTest {
 
     @Test
     public void decodingTest() {
@@ -31,6 +31,7 @@ public class LongSerializerTest {
     public void testMinMaxValues() {
         List<Long> wrongData = List.of(Long.MAX_VALUE, Long.MAX_VALUE - 500, Long.MIN_VALUE, Long.MIN_VALUE + 500);
         IEncoder<Long> coder = new LongEncoder();
+        
         for (long x : wrongData) {
             assertThrows(RuntimeException.class, () -> coder.encode(x));
         }
