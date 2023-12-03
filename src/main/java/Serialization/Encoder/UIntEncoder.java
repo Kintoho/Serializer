@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIntEncoder implements IEncoder<Long> {
-    public static final IEncoder<Long> encoder = new UIntEncoder();
+    public static final IEncoder<Long> coder = new UIntEncoder();
 
     @Override
     public byte[] encode(Long unsigned) {

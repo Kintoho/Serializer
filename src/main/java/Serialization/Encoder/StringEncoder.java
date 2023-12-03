@@ -11,14 +11,14 @@ public class StringEncoder implements IEncoder<String> {
     @Override
     public byte[] encode(String data) {
         byte[] value = data.getBytes(StandardCharsets.UTF_8);
-        byte[] length = UIntEncoder.encoder.encode((long) value.length);
+        byte[] length = UIntEncoder.coder.encode((long) value.length);
 
         return ArrayUtils.addAll(length, value);
     }
 
     @Override
     public DecoderResult<String> decode(byte[] encodedData, int fromByte) {
-        DecoderResult<Long> result = UIntEncoder.encoder.decode(encodedData, fromByte);
+        DecoderResult<Long> result = UIntEncoder.coder.decode(encodedData, fromByte);
         String str = new String(encodedData, fromByte + result.getLength(), result.getDecoderResult().intValue(),
                 StandardCharsets.UTF_8);
 

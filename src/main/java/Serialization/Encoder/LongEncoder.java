@@ -13,12 +13,12 @@ public class LongEncoder implements IEncoder<Long> {
         checkDiapason(signed);
         long unsigned = ZigZag.wrap(signed);
 
-        return UIntEncoder.encoder.encode(unsigned);
+        return UIntEncoder.coder.encode(unsigned);
     }
 
     @Override
     public DecoderResult<Long> decode(byte[] encodedData, int fromByte) {
-        DecoderResult<Long> unsignedResult = UIntEncoder.encoder.decode(encodedData, fromByte);
+        DecoderResult<Long> unsignedResult = UIntEncoder.coder.decode(encodedData, fromByte);
 
         return new DecoderResult<Long>(ZigZag.unwrap(unsignedResult.getDecoderResult()), unsignedResult.getLength());
     }

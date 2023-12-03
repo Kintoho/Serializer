@@ -19,6 +19,7 @@ public class IntEncoder implements IEncoder<Integer> {
     @Override
     public DecoderResult<Integer> decode(byte[] encodedData, int fromByte) {
         DecoderResult<Long> longResult = longEncoder.decode(encodedData, fromByte);
+        
         return new DecoderResult<>(longResult.getDecoderResult().intValue(), longResult.getLength());
     }
 
