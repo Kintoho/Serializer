@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListEncoder<V> implements IEncoder<List<V>> {
-    private IEncoder<V> encoder;
+    private IEncoder<V> coder;
 
     @Override
     public byte[] encode(List<V> data) {
@@ -15,24 +15,26 @@ public class ListEncoder<V> implements IEncoder<List<V>> {
         int bytesCounter = 0;
 
         if (data.get(0) instanceof String) {
-            encoder = (IEncoder<V>) new StringEncoder();
+            coder = (IEncoder<V>) new StringEncoder();
         } else if (data.get(0) instanceof Integer) {
-            encoder = (IEncoder<V>) new IntEncoder();
+            coder = (IEncoder<V>) new IntEncoder();
         } else if (data.get(0) instanceof Long) {
-            encoder = (IEncoder<V>) new LongEncoder();
+            coder = (IEncoder<V>) new LongEncoder();
         } else if (data.get(0) instanceof Double) {
-            encoder = (IEncoder<V>) new DoubleEncoder();
+            coder = (IEncoder<V>) new DoubleEncoder();
+        } else if (data.get(0) instanceof List) {
+            coder = (IEncoder<V>) new ListEncoder();
         } else {
             throw new IllegalStateException("Unexpected value: " + data.get(0).getClass());
         }
 
-        byte[] encodedListSize = UIntEncoder.encoder.encode((long) data.size());
+        byte[] encodedListSize = UIntEncoder.coder.encode((long) data.size());
 
         encodedDataList.add(encodedListSize);
         bytesCounter += encodedListSize.length;
 
         for (V datum : data) {
-            byte[] encodedListItem = encoder.encode(datum);
+            byte[] encodedListItem = coder.encode(datum);
 
             encodedDataList.add(encodedListItem);
             bytesCounter += encodedListItem.length;
@@ -46,13 +48,13 @@ public class ListEncoder<V> implements IEncoder<List<V>> {
 
     @Override
     public DecoderResult<List<V>> decode(byte[] encodedData, int fromByte) {
-        DecoderResult<Long> dataSize = UIntEncoder.encoder.decode(encodedData);
+        DecoderResult<Long> dataSize = UIntEncoder.coder.decode(encodedData, fromByte);
         int offset = fromByte + dataSize.getLength();
 
         List<V> result = new ArrayList<>();
 
         for (int i = 0; i < dataSize.getDecoderResult(); i++) {
-            DecoderResult<V> listItem = encoder.decode(encodedData, offset);
+            DecoderResult<V> listItem = coder.decode(encodedData, offset);
             offset += listItem.getLength();
 
             result.add(listItem.getDecoderResult());

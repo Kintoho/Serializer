@@ -14,7 +14,7 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
         int bytesCounter = 0;
 
         Set<String> keys = data.keySet();
-        byte[] encodedMapLength = UIntEncoder.encoder.encode((long) keys.size());
+        byte[] encodedMapLength = UIntEncoder.coder.encode((long) keys.size());
 
         encodedDataList.add(encodedMapLength);
         bytesCounter += encodedMapLength.length;
@@ -39,7 +39,7 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
 
     @Override
     public DecoderResult<Map<String, String>> decode(byte[] encodedData, int fromByte) {
-        DecoderResult<Long> dataSize = UIntEncoder.encoder.decode(encodedData);
+        DecoderResult<Long> dataSize = UIntEncoder.coder.decode(encodedData, fromByte);
         int offset = fromByte + dataSize.getLength();
 
         Map<String, String> result = new HashMap<>(dataSize.getDecoderResult().intValue());
