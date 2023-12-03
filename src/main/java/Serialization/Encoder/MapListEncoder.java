@@ -5,11 +5,12 @@ import Serialization.Encoder.Core.IEncoder;
 
 import java.util.*;
 
-public class StringMapEncoder implements IEncoder<Map<String, String>> {
+public class MapListEncoder<V> implements IEncoder<Map<String, List<V>>> {
     private static final IEncoder<String> stringEncoder = new StringEncoder();
+    private final IEncoder<List<V>> listEncoder = new ListEncoder<>();
 
     @Override
-    public byte[] encode(Map<String, String> data) {
+    public byte[] encode(Map<String, List<V>> data) {
         List<byte[]> encodedDataList = new LinkedList<>();
         int bytesCounter = 0;
 
@@ -25,7 +26,7 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
             encodedDataList.add(encodedKey);
             bytesCounter += encodedKey.length;
 
-            byte[] encodedValue = stringEncoder.encode(data.get(key));
+            byte[] encodedValue = listEncoder.encode(data.get(key));
 
             encodedDataList.add(encodedValue);
             bytesCounter += encodedValue.length;
@@ -38,17 +39,17 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
     }
 
     @Override
-    public DecoderResult<Map<String, String>> decode(byte[] encodedData, int fromByte) {
+    public DecoderResult<Map<String, List<V>>> decode(byte[] encodedData, int fromByte) {
         DecoderResult<Long> dataSize = UIntEncoder.coder.decode(encodedData, fromByte);
         int offset = fromByte + dataSize.getLength();
 
-        Map<String, String> result = new HashMap<>(dataSize.getDecoderResult().intValue());
+        Map<String, List<V>> result = new HashMap<>(dataSize.getDecoderResult().intValue());
 
         for (int i = 0; i < dataSize.getDecoderResult(); i++) {
             DecoderResult<String> key = stringEncoder.decode(encodedData, offset);
             offset += key.getLength();
 
-            DecoderResult<String> value = stringEncoder.decode(encodedData, offset);
+            DecoderResult<List<V>> value = listEncoder.decode(encodedData, offset);
             offset += value.getLength();
 
             result.put(key.getDecoderResult(), value.getDecoderResult());
@@ -57,7 +58,7 @@ public class StringMapEncoder implements IEncoder<Map<String, String>> {
     }
 
     @Override
-    public DecoderResult<Map<String, String>> decode(byte[] encodedData) {
+    public DecoderResult<Map<String, List<V>>> decode(byte[] encodedData) {
         return decode(encodedData, 0);
     }
 

@@ -9,18 +9,18 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Map;
 
-public class StringMapEncoderTest {
+public class MapListEncoderTest {
     @Test
     public void testCoding() {
         var test = List.of(
-                Map.of("1", "Alexander", "2", "Dmitry"),
-                Map.of("jhvkjeagvj", "ertyuio;plkjhnbvm,.", "123456890", "zxcbm,sfghjklwetuio",
-                        "help me", "i am dying"));
-        IEncoder<Map<String, String>> coder = new StringMapEncoder();
+                Map.of("1", List.of(Double.MAX_VALUE / 2, Double.MIN_VALUE / 2, -1231231.123D, 123.4356D, 0.000001D,
+                        20.1234689D, -56.98765D, 123456890.123456789987D, -123456890.123456789987D)));
 
-        for (Map<String, String> x : test) {
+        IEncoder<Map<String, List<Double>>> coder = new MapListEncoder();
+
+        for (Map<String, List<Double>> x : test) {
             byte[] encodedBytes = coder.encode(x);
-            DecoderResult<Map<String, String>> decoded = coder.decode(encodedBytes, 0);
+            DecoderResult<Map<String, List<Double>>> decoded = coder.decode(encodedBytes, 0);
 
             assertEquals(encodedBytes.length, decoded.getLength());
             assertEquals(x, decoded.getDecoderResult());

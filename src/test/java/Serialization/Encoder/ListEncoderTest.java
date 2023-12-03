@@ -72,7 +72,7 @@ public class ListEncoderTest {
     }
 
     @Test
-    public void test2() {
+    public void testEncoder() {
         var testList = List.of(
                 List.of(Long.MAX_VALUE / 2, Long.MIN_VALUE / 2, -1231231L, 123L, 0L, 20L, -56L, 123456890L,
                                 -123456890L),
@@ -92,7 +92,7 @@ public class ListEncoderTest {
 
         assertEquals(encRes1.length, res1.getLength());
         assertEquals(testList.get(0), res1.getDecoderResult());
-        
+
         assertEquals(encRes2.length, res2.getLength());
         assertEquals(testList.get(1), res2.getDecoderResult());
 
