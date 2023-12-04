@@ -5,10 +5,9 @@ import Serialization.Encoder.Core.IEncoder;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
-import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class ColumnEncoderTest {
     @Test
@@ -27,5 +26,4 @@ public class ColumnEncoderTest {
             assertEquals(x, decoded.getDecoderResult());
         }
     }
-
 }

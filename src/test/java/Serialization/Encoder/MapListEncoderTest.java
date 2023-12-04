@@ -22,8 +22,6 @@ public class MapListEncoderTest {
         for (int i = 1; i <= 100; i++) {
             dataMap.put(String.valueOf(i), list);
         }
-//        var test = List.of(
-//                Map.of("First", List.of(Double.MAX_VALUE / 2, Double.MIN_VALUE / 2, 132.231D)));
 
         IEncoder<Map<String, List<String>>> coder = new MapListEncoder();
 
@@ -41,6 +39,5 @@ public class MapListEncoderTest {
 
             assertEquals(encodedBytes.length, decoded.getLength());
             assertEquals(dataMap, decoded.getDecoderResult());
-
     }
 }
