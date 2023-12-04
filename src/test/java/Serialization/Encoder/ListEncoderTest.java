@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ListEncoderTest {
     @Test
-    public void test() {
+    public void testEncode() {
         var testList = List.of(
                 List.of(
                         new ListEncoder<Double>(),
@@ -63,8 +63,16 @@ public class ListEncoderTest {
             var coder = (IEncoder) test.get(0);
             var array = test.get(1);
 
+            long startEncode = System.currentTimeMillis();
             byte[] encodedBytes = coder.encode(array);
+            long endEncode = System.currentTimeMillis();
+            System.out.println("Time to encode " + (endEncode - startEncode));
+            System.out.println("Memory: " + encodedBytes.length);
+
+            long startDecode = System.currentTimeMillis();
             DecoderResult<List<Double>> decoded = coder.decode(encodedBytes, 0);
+            long endDecode = System.currentTimeMillis();
+            System.out.println("Time to decode " + (endDecode - startDecode));
 
             assertEquals(encodedBytes.length, decoded.getLength());
             assertEquals(array, decoded.getDecoderResult());
@@ -72,7 +80,7 @@ public class ListEncoderTest {
     }
 
     @Test
-    public void testEncoder() {
+    public void testEncodeWithOneEncoder() {
         var testList = List.of(
                 List.of(Long.MAX_VALUE / 2, Long.MIN_VALUE / 2, -1231231L, 123L, 0L, 20L, -56L, 123456890L,
                                 -123456890L),
