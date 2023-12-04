@@ -3,25 +3,31 @@ package Serialization.Encoder.Protobuf;
 import Serialization.Encoder.Core.DecoderResult;
 import com.google.protobuf.ListValue;
 import com.google.protobuf.Value;
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProtoColumnEncoderTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class ProtoColumnEncoderTest {
 
     @Test
     public void testEncode() {
         ProtoColumnEncoder coder = new ProtoColumnEncoder();
 
-        Value value = Value.newBuilder().setNumberValue(132.231D).build();
-        Value valueMax = Value.newBuilder().setNumberValue(Double.MAX_VALUE / 2).build();
-        Value valueMin = Value.newBuilder().setNumberValue(Double.MIN_VALUE / 2).build();
+        ListValue.Builder builder = ListValue.newBuilder();
+        Value.Builder valueBuilder = Value.newBuilder();
+        for (int i = 1; i <= 100_000; i++){
+            Value value = valueBuilder.setStringValue("Value: " + i).build();
+            builder.addValues(value);
+        }
 
-        ListValue listValue = ListValue.newBuilder().addValues(value).addValues(valueMax).addValues(valueMin).build();
         Map<String, ListValue> map = new HashMap<>();
-        map.put("First", listValue);
+        for (int i = 1; i <= 100; i++){
+            map.put(Integer.toString(i), builder.build());
+
+        }
 
         long startEncode = System.currentTimeMillis();
         byte[] encodedBytes = coder.encode(map);
@@ -37,5 +43,4 @@ public class ProtoColumnEncoderTest extends TestCase {
         assertEquals(encodedBytes.length, decoded.getLength());
         assertEquals(map, decoded.getDecoderResult());
     }
-
 }
