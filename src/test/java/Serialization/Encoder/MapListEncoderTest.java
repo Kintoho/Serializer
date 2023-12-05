@@ -15,7 +15,7 @@ public class MapListEncoderTest {
     @Test
     public void testCoding() {
         Map<String, List<String>> dataMap = new HashMap<>();
-        List<String> list = new ArrayList<>(100001);
+        List<String> list = new ArrayList<>(100_000);
         for (int i = 1; i <= 100_000; i++) {
             list.add("Value: " + i);
         }
@@ -23,21 +23,20 @@ public class MapListEncoderTest {
             dataMap.put(String.valueOf(i), list);
         }
 
-        IEncoder<Map<String, List<String>>> coder = new MapListEncoder();
+        IEncoder<Map<String, List<String>>> coder = new MapListEncoder<>();
 
+        long startEncode = System.currentTimeMillis();
+        byte[] encodedBytes = coder.encode(dataMap);
+        long endEncode = System.currentTimeMillis();
+        System.out.println("Time to encode " + (endEncode - startEncode));
+        System.out.println("Memory: " + encodedBytes.length);
 
-            long startEncode = System.currentTimeMillis();
-            byte[] encodedBytes = coder.encode(dataMap);
-            long endEncode = System.currentTimeMillis();
-            System.out.println("Time to encode " + (endEncode - startEncode));
-            System.out.println("Memory: " + encodedBytes.length);
+        long startDecode = System.currentTimeMillis();
+        DecoderResult<Map<String, List<String>>> decoded = coder.decode(encodedBytes, 0);
+        long endDecode = System.currentTimeMillis();
+        System.out.println("Time to decode " + (endDecode - startDecode));
 
-            long startDecode = System.currentTimeMillis();
-            DecoderResult<Map<String, List<String>>> decoded = coder.decode(encodedBytes, 0);
-            long endDecode = System.currentTimeMillis();
-            System.out.println("Time to decode " + (endDecode - startDecode));
-
-            assertEquals(encodedBytes.length, decoded.getLength());
-            assertEquals(dataMap, decoded.getDecoderResult());
+        assertEquals(encodedBytes.length, decoded.getLength());
+        assertEquals(dataMap, decoded.getDecoderResult());
     }
 }

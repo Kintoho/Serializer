@@ -5,27 +5,37 @@ import com.google.protobuf.ListValue;
 import com.google.protobuf.Value;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
 public class ProtoColumnEncoderTest {
-
     @Test
     public void testEncode() {
         ProtoColumnEncoder coder = new ProtoColumnEncoder();
 
-        ListValue.Builder builder = ListValue.newBuilder();
-        Value.Builder valueBuilder = Value.newBuilder();
-        for (int i = 1; i <= 100_000; i++){
-            Value value = valueBuilder.setStringValue("Value: " + i).build();
-            builder.addValues(value);
+        List<Value> list = new ArrayList<>(100_000);
+        for (int i = 1; i <= 100_000; i++) {
+            list.add(Value.newBuilder().setStringValue("Value: " + i).build());
         }
 
+        ListValue.Builder listbuilder = ListValue.newBuilder();
+
+        listbuilder.addAllValues(list);
+        // Value.Builder valueBuilder = Value.newBuilder();
+        
+        // for (int i = 1; i <= 100_000; i++){
+        //     Value value = valueBuilder.setStringValue("Value: " + i).build();
+        //     listbuilder.addValues(value);
+        // }
+
         Map<String, ListValue> map = new HashMap<>();
+
         for (int i = 1; i <= 100; i++){
-            map.put(Integer.toString(i), builder.build());
+            map.put(Integer.toString(i), listbuilder.build());
 
         }
 
