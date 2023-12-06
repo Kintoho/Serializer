@@ -47,8 +47,8 @@ public class Generate {
             protoListBuilder.addValues(Value.newBuilder().setNumberValue(randomLong).build());
         }
 
-        Map<String, List<Long>> Map = new HashMap<>();
-        Map<String, ListValue> protoMap = new HashMap<>();
+        Map<String, List<Long>> Map = new HashMap<>(rows);
+        Map<String, ListValue> protoMap = new HashMap<>(rows);
 
         for (int i = 1; i <= cols; i++) {
             byte[] bytes = new byte[100];
@@ -90,28 +90,25 @@ public class Generate {
     public static Pair<Map<String, List<String>>, Map<String, ListValue>> generateString(int rows, int cols) {
         List<String> list = new ArrayList<>(rows);
         ListValue.Builder protoListBuilder = ListValue.newBuilder();
+        List<Value> listProto = new ArrayList<>(rows);
 
         for (int i = 1; i <= rows; i++) {
             byte[] bytes = new byte[100];
             ThreadLocalRandom.current().nextBytes(bytes);
             String randomString = bytes.toString();
-
             list.add(randomString);
-            protoListBuilder.addValues(Value.newBuilder().setStringValue(randomString).build());
+            listProto.add(Value.newBuilder().setStringValue(randomString).build());
         }
+        protoListBuilder.addAllValues(listProto).build();
 
-        Map<String, List<String>> Map = new HashMap<>();
-        Map<String, ListValue> protoMap = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>(rows);
+        Map<String, ListValue> protoMap = new HashMap<>(rows);
 
         for (int i = 1; i <= cols; i++) {
-            byte[] bytes = new byte[100];
-            ThreadLocalRandom.current().nextBytes(bytes);
-            String key = bytes.toString();
-
-            Map.put(key+i, list);
-            protoMap.put(key+i, protoListBuilder.build());
+            map.put(Integer.toString(i), list);
+            protoMap.put(Integer.toString(i), protoListBuilder.build());
         }
 
-        return Pair.of(Map, protoMap);
+        return Pair.of(map, protoMap);
     }
 }

@@ -15,11 +15,11 @@ public class MapListEncoderTest {
     @Test
     public void testCoding() {
         Map<String, List<String>> dataMap = new HashMap<>();
-        List<String> list = new ArrayList<>(100_000);
-        for (int i = 1; i <= 100_000; i++) {
+        List<String> list = new ArrayList<>(50_000);
+        for (int i = 1; i <= 50_000; i++) {
             list.add("Value: " + i);
         }
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 200; i++) {
             dataMap.put(String.valueOf(i), list);
         }
 

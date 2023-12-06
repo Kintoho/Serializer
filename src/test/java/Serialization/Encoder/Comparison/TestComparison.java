@@ -16,7 +16,7 @@ import Serialization.Encoder.Core.IEncoder;
 import Serialization.Encoder.Protobuf.ProtoColumnEncoder;
 
 public class TestComparison {
-    private static final int rows = 100_000;
+    private static final int rows = 50_000;
     private static final int cols = 100;
 
     @Test

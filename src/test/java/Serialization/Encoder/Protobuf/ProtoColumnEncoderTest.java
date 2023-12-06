@@ -17,26 +17,19 @@ public class ProtoColumnEncoderTest {
     public void testEncode() {
         ProtoColumnEncoder coder = new ProtoColumnEncoder();
 
-        List<Value> list = new ArrayList<>(100_000);
-        for (int i = 1; i <= 100_000; i++) {
+        List<Value> list = new ArrayList<>(50_000);
+        for (int i = 1; i <= 50_000; i++) {
             list.add(Value.newBuilder().setStringValue("Value: " + i).build());
         }
 
         ListValue.Builder listbuilder = ListValue.newBuilder();
 
         listbuilder.addAllValues(list);
-        // Value.Builder valueBuilder = Value.newBuilder();
-        
-        // for (int i = 1; i <= 100_000; i++){
-        //     Value value = valueBuilder.setStringValue("Value: " + i).build();
-        //     listbuilder.addValues(value);
-        // }
 
         Map<String, ListValue> map = new HashMap<>();
 
-        for (int i = 1; i <= 100; i++){
+        for (int i = 1; i <= 250; i++){
             map.put(Integer.toString(i), listbuilder.build());
-
         }
 
         long startEncode = System.currentTimeMillis();
