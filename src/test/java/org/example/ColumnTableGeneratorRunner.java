@@ -1,6 +1,10 @@
 package org.example;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.example.generator.ColumnTableGenerator;
+
+import java.util.List;
+import java.util.Map;
 
 public class ColumnTableGeneratorRunner {
     private static final int size1kb = 1024;
@@ -9,9 +13,9 @@ public class ColumnTableGeneratorRunner {
     private static final int size2gb = 2 * size1mb;
     private static final int size3gb = 3 * size1gb;
     public static void main(String[] args) throws Exception {
-        var generator = new ColumnTableGenerator();
+        ColumnTableGenerator generator = new ColumnTableGenerator();
 
-        var table = generator.generateTable(size1kb);
+        Map<String, Pair<String, List<String>>> table = generator.generateTable(size1kb);
         generator.tableToTxt(table, "./src/test/java/org/example/data/size1kb.txt");
 
         table = generator.generateTable(size1mb);
