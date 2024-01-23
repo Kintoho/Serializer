@@ -24,19 +24,19 @@ public class ParquetOrcBenchmark {
 
         String prefixPathToDataset = "./src/test/java/org/example/data";
         this.rawDF = this.spark.read().format("csv").option("header", true)
-                .load(prefixPathToDataset + "/size1kb.csv");
+                .load(prefixPathToDataset + "/filename.csv");
     }
     @Benchmark
     public void parquetBenchmark() {
         this.rawDF.write().mode(SaveMode.Overwrite)
-                .parquet("./src/main/java/org/example/results/output_parquet/1kb");
+                .parquet("./src/main/java/org/example/results/output_parquet");
     }
 
     @Benchmark
     public void orcBenchmark() {
         rawDF.write().mode(SaveMode.Overwrite)
                 .format("orc")
-                .save("./src/main/java/org/example/results/output_orc/1kb");
+                .save("./src/main/java/org/example/results/output_orc");
     }
 
     @TearDown
