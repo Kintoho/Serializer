@@ -1,7 +1,7 @@
-package org.example;
+package generator;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.example.generator.ColumnTableGenerator;
+import utils.ColumnTableGenerator;
 
 import java.util.List;
 import java.util.Map;
