@@ -35,4 +35,24 @@ public class ParquetOrcReaderTest {
             System.out.println("OrcNotRandomReading time: " + (endReadingParquet - startReadingParquet));
         }
     }
+
+    @Test
+    public void readParquetOrcBig() {
+        long totalParquet = 0;
+        long totalOrc = 0;
+        for (int i = 0; i < 3; i++) {
+            long startReadingParquet = System.currentTimeMillis();
+            reader.readParquet("src/main/java/results/parquet/big/part-0000" + i + "-786e2310-0cbc-488a-a1b5-e1cdbddb060a-c000.snappy.parquet");
+            long endReadingParquet = System.currentTimeMillis();
+            totalParquet += (endReadingParquet - startReadingParquet);
+
+            long startReadingOrc = System.currentTimeMillis();
+            reader.readOrc("src/main/java/results/orc/big/part-0000" + i + "-df6ffff2-b5ce-40e0-8c65-d0fb36e0d859-c000.snappy.orc");
+            long endReadingOrc = System.currentTimeMillis();
+            totalOrc += (endReadingOrc - startReadingOrc);
+
+        }
+        System.out.println("ParquetBigReading time: " + totalParquet);
+        System.out.println("OrcBigReading time: " + totalOrc);
+    }
 }
